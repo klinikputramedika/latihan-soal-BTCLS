@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,234 +12,224 @@
 
     <meta
         name="description"
-        content="Latihan Soal BTCLS - Klinik Putra Medika"
+        content="Latihan Soal BTCLS Klinik Putra Medika"
     >
 
-    <title>Latihan Soal BTCLS</title>
+    <title>Latihan BTCLS | Klinik Putra Medika</title>
 
     <link
         rel="stylesheet"
         href="css/style.css"
     >
+
 </head>
+
 
 <body>
 
-    <!-- =========================
-         HEADER
-    ========================== -->
 
-    <header class="quiz-header">
+<header class="quiz-header">
 
-        <div class="quiz-header-inner">
+    <div class="quiz-header-inner">
 
-            <div class="brand">
+        <div class="brand">
 
-                <div class="brand-icon">
-                    BT
-                </div>
-
-                <div>
-                    <h1>BTCLS Practice</h1>
-
-                    <span>
-                        Klinik Putra Medika
-                    </span>
-                </div>
-
+            <div class="brand-icon">
+                BT
             </div>
 
+            <div>
 
-            <div class="quiz-score-box">
+                <h1>
+                    BTCLS Practice
+                </h1>
 
-                <span>Score</span>
-
-                <strong id="current-score">
-                    0
-                </strong>
+                <span>
+                    Klinik Putra Medika
+                </span>
 
             </div>
 
         </div>
 
-    </header>
+
+        <div class="quiz-score-box">
+
+            <span>
+                Score
+            </span>
+
+            <strong id="current-score">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+</header>
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
 
-    <main class="quiz-container">
+<main class="quiz-container">
 
 
-        <!-- PROGRESS -->
+    <section class="quiz-progress">
 
-        <section class="quiz-progress">
+        <div class="progress-info">
 
-            <div class="progress-info">
+            <span id="question-number">
+                Soal 1
+            </span>
 
-                <span id="question-number">
-                    Soal 1
-                </span>
+            <span id="progress-text">
+                1 / 100
+            </span>
 
-                <span id="progress-text">
-                    1 / 100
-                </span>
-
-            </div>
+        </div>
 
 
-            <div class="progress-track">
-
-                <div
-                    id="progress-bar"
-                    class="progress-bar"
-                    style="width: 1%"
-                ></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- QUESTION CARD -->
-
-        <section class="question-card">
-
-
-            <!-- TOPIC -->
+        <div class="progress-track">
 
             <div
-                id="question-topic"
-                class="question-topic"
-            >
-                BTCLS
-            </div>
-
-
-            <!-- QUESTION -->
-
-            <h2
-                id="question-text"
-                class="question-text"
-            >
-                Memuat soal...
-            </h2>
-
-
-            <!-- OPTIONS -->
-
-            <div
-                id="options-container"
-                class="options-container"
-            >
-
-                <!--
-                    Pilihan jawaban
-                    akan dibuat otomatis
-                    oleh quiz.js
-                -->
-
-            </div>
-
-
-            <!-- FEEDBACK -->
-
-            <div
-                id="answer-feedback"
-                class="answer-feedback"
+                id="progress-bar"
+                class="progress-bar"
             ></div>
 
+        </div>
 
-            <!-- NAVIGATION -->
-
-            <div class="quiz-navigation">
-
-                <button
-                    id="btn-skip"
-                    class="btn btn-secondary"
-                    type="button"
-                >
-                    Lewati →
-                </button>
+    </section>
 
 
-                <button
-                    id="btn-next"
-                    class="btn btn-primary"
-                    type="button"
-                >
-                    Berikutnya →
-                </button>
+
+    <section class="question-card">
+
+
+        <div
+            id="question-topic"
+            class="question-topic"
+        >
+            BTCLS
+        </div>
+
+
+        <h2
+            id="question-text"
+            class="question-text"
+        >
+            Memuat soal...
+        </h2>
+
+
+        <div
+            id="options-container"
+            class="options-container"
+        >
+        </div>
+
+
+        <div class="quiz-navigation">
+
+            <button
+                id="btn-skip"
+                class="btn btn-secondary"
+                type="button"
+            >
+                Lewati →
+            </button>
+
+
+            <button
+                id="btn-next"
+                class="btn btn-primary"
+                type="button"
+            >
+                Berikutnya →
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="quiz-info">
+
+
+        <div class="info-item">
+
+            <span class="info-icon">
+                ✓
+            </span>
+
+            <div>
+
+                <strong>
+                    Pilih Jawaban
+                </strong>
+
+                <small>
+                    Jawaban langsung dinilai
+                </small>
 
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- INFO -->
+        <div class="info-item">
 
-        <section class="quiz-info">
+            <span class="info-icon">
+                →
+            </span>
 
-            <div class="info-item">
+            <div>
 
-                <span class="info-icon">
-                    ✓
-                </span>
+                <strong>
+                    Lewati Soal
+                </strong>
 
-                <div>
-                    <strong>Jawab</strong>
-                    <small>
-                        Pilih jawaban yang paling tepat
-                    </small>
-                </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span class="info-icon">
-                    →
-                </span>
-
-                <div>
-                    <strong>Lewati</strong>
-                    <small>
-                        Soal dapat dikerjakan kembali
-                    </small>
-                </div>
+                <small>
+                    Soal tetap dihitung
+                </small>
 
             </div>
 
+        </div>
 
-            <div class="info-item">
 
-                <span class="info-icon">
-                    100
-                </span>
+        <div class="info-item">
 
-                <div>
-                    <strong>100 Soal</strong>
-                    <small>
-                        Score dihitung dari seluruh soal
-                    </small>
-                </div>
+            <span class="info-icon">
+                100
+            </span>
+
+            <div>
+
+                <strong>
+                    100 Soal
+                </strong>
+
+                <small>
+                    Nilai akhir 0–100
+                </small>
 
             </div>
 
-        </section>
-
-    </main>
+        </div>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+    </section>
 
-    <script src="js/questions.js"></script>
 
-    <script src="js/quiz.js"></script>
+</main>
+
+
+
+<script src="js/questions.js"></script>
+
+<script src="js/quiz.js"></script>
+
 
 </body>
 
