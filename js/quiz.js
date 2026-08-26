@@ -2,160 +2,205 @@
 // BTCLS QUIZ ENGINE
 // ============================================================
 
-// -------------------------
-// STATE QUIZ
-// -------------------------
-
 let quizQuestions = [];
+
 let currentQuestionIndex = 0;
 
 let userAnswers = [];
+
 let questionStatus = [];
 
-let correctAnswers = 0;
-let wrongAnswers = 0;
-let skippedAnswers = 0;
+
+// ============================================================
+// DOM
+// ============================================================
+
+const questionNumber =
+    document.getElementById("question-number");
+
+const questionTopic =
+    document.getElementById("question-topic");
+
+const questionText =
+    document.getElementById("question-text");
+
+const optionsContainer =
+    document.getElementById("options-container");
+
+const btnNext =
+    document.getElementById("btn-next");
+
+const btnSkip =
+    document.getElementById("btn-skip");
+
+const progressBar =
+    document.getElementById("progress-bar");
+
+const progressText =
+    document.getElementById("progress-text");
+
+const currentScore =
+    document.getElementById("current-score");
 
 
-// -------------------------
-// ELEMENT DOM
-// -------------------------
+// ============================================================
+// SHUFFLE
+// ============================================================
 
-const questionNumber = document.getElementById("question-number");
-const questionTopic = document.getElementById("question-topic");
-const questionText = document.getElementById("question-text");
-const optionsContainer = document.getElementById("options-container");
+function shuffle(array) {
 
-const btnNext = document.getElementById("btn-next");
-const btnSkip = document.getElementById("btn-skip");
+    const result = [...array];
 
-const progressBar = document.getElementById("progress-bar");
-const progressText = document.getElementById("progress-text");
+    for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ) {
 
-const currentScore = document.getElementById("current-score");
-
-
-// -------------------------
-// SHUFFLE ARRAY
-// -------------------------
-
-function shuffleArray(array) {
-
-    const shuffled = [...array];
-
-    for (let i = shuffled.length - 1; i > 0; i--) {
-
-        const randomIndex = Math.floor(
-            Math.random() * (i + 1)
-        );
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
 
         [
-            shuffled[i],
-            shuffled[randomIndex]
-        ] = [
-            shuffled[randomIndex],
-            shuffled[i]
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
         ];
     }
 
-    return shuffled;
+    return result;
 }
 
 
-// -------------------------
-// MEMULAI QUIZ
-// -------------------------
+// ============================================================
+// START
+// ============================================================
 
 function startQuiz() {
 
-    // Random urutan soal
-    quizQuestions = shuffleArray(questions);
+    quizQuestions =
+        shuffle(questions).slice(0, 100);
 
-    // Pastikan jumlah soal 100
-    quizQuestions = quizQuestions.slice(0, 100);
 
-    // Array jawaban user
-    userAnswers = new Array(
-        quizQuestions.length
-    ).fill(null);
+    userAnswers =
+        new Array(
+            quizQuestions.length
+        ).fill(null);
 
-    // Status setiap soal
-    questionStatus = new Array(
-        quizQuestions.length
-    ).fill("unanswered");
+
+    questionStatus =
+        new Array(
+            quizQuestions.length
+        ).fill("unanswered");
+
 
     currentQuestionIndex = 0;
 
-    correctAnswers = 0;
-    wrongAnswers = 0;
-    skippedAnswers = 0;
 
     showQuestion();
 }
 
 
-// -------------------------
-// TAMPILKAN SOAL
-// -------------------------
+// ============================================================
+// SHOW QUESTION
+// ============================================================
 
 function showQuestion() {
 
     const question =
-        quizQuestions[currentQuestionIndex];
+        quizQuestions[
+            currentQuestionIndex
+        ];
+
 
     if (!question) {
+
         finishQuiz();
+
         return;
     }
 
-    // Nomor soal
+
     questionNumber.textContent =
         `Soal ${currentQuestionIndex + 1}`;
 
-    // Topik
+
     questionTopic.textContent =
         question.topic;
 
-    // Pertanyaan
+
     questionText.textContent =
         question.question;
 
-    // Progress
+
+    // progress
+
     const total =
         quizQuestions.length;
 
     const current =
         currentQuestionIndex + 1;
 
-    const percentage =
-        (current / total) * 100;
-
-    progressBar.style.width =
-        `${percentage}%`;
 
     progressText.textContent =
         `${current} / ${total}`;
 
-    // Score
+
+    progressBar.style.width =
+        `${(current / total) * 100}%`;
+
+
+    // score
+
     updateScore();
 
-    // Bersihkan pilihan
+
+    // clear
+
     optionsContainer.innerHTML = "";
 
-    // Pilihan
-    Object.entries(question.options)
-        .forEach(([key, value]) => {
+
+    const feedback =
+        document.getElementById(
+            "answer-feedback"
+        );
+
+
+    if (feedback) {
+
+        feedback.remove();
+    }
+
+
+    // options
+
+    Object.entries(
+        question.options
+    ).forEach(
+        ([key, value]) => {
 
             const button =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type = "button";
 
             button.className =
                 "option-button";
 
+
             button.dataset.answer =
                 key;
 
+
             button.innerHTML = `
+
                 <span class="option-letter">
                     ${key}
                 </span>
@@ -163,65 +208,97 @@ function showQuestion() {
                 <span class="option-text">
                     ${value}
                 </span>
+
             `;
+
 
             button.addEventListener(
                 "click",
                 () => selectAnswer(key)
             );
 
-            optionsContainer.appendChild(button);
-        });
 
-    // Kalau sebelumnya sudah dijawab
-    if (userAnswers[currentQuestionIndex]) {
+            optionsContainer.appendChild(
+                button
+            );
+        }
+    );
+
+
+    // restore
+
+    if (
+        questionStatus[
+            currentQuestionIndex
+        ] === "answered"
+    ) {
 
         restoreAnswer();
     }
 
-    updateNavigationButtons();
+
+    updateNavigation();
 }
 
 
-// -------------------------
-// PILIH JAWABAN
-// -------------------------
+// ============================================================
+// SELECT ANSWER
+// ============================================================
 
 function selectAnswer(answer) {
 
-    // Jangan bisa menjawab ulang
-    // jika sudah pernah memilih
     if (
-        questionStatus[currentQuestionIndex]
-        === "answered"
+        questionStatus[
+            currentQuestionIndex
+        ] === "answered"
     ) {
+
         return;
     }
 
+
     const question =
-        quizQuestions[currentQuestionIndex];
+        quizQuestions[
+            currentQuestionIndex
+        ];
+
+
+    userAnswers[
+        currentQuestionIndex
+    ] = answer;
+
+
+    questionStatus[
+        currentQuestionIndex
+    ] = "answered";
+
 
     const buttons =
         document.querySelectorAll(
             ".option-button"
         );
 
+
     buttons.forEach(button => {
 
         button.disabled = true;
 
+
         if (
             button.dataset.answer === answer
         ) {
+
             button.classList.add(
                 "selected"
             );
         }
 
+
         if (
             button.dataset.answer ===
             question.answer
         ) {
+
             button.classList.add(
                 "correct"
             );
@@ -230,71 +307,51 @@ function selectAnswer(answer) {
     });
 
 
-    userAnswers[currentQuestionIndex] =
-        answer;
-
-    questionStatus[currentQuestionIndex] =
-        "answered";
-
-
-    // Hitung benar / salah
-    if (answer === question.answer) {
-
-        correctAnswers++;
-
-    } else {
-
-        wrongAnswers++;
-    }
-
-
-    // Tampilkan feedback
     showFeedback(answer);
+
 
     updateScore();
 
-    updateNavigationButtons();
+    updateNavigation();
 }
 
 
-// -------------------------
+// ============================================================
 // FEEDBACK
-// -------------------------
+// ============================================================
 
 function showFeedback(answer) {
 
     const question =
-        quizQuestions[currentQuestionIndex];
-
-    let feedback =
-        document.getElementById(
-            "answer-feedback"
-        );
-
-    if (!feedback) {
-
-        feedback =
-            document.createElement("div");
-
-        feedback.id =
-            "answer-feedback";
-
-        optionsContainer.after(
-            feedback
-        );
-    }
+        quizQuestions[
+            currentQuestionIndex
+        ];
 
 
-    if (answer === question.answer) {
+    const feedback =
+        document.createElement("div");
+
+
+    feedback.id =
+        "answer-feedback";
+
+
+    if (
+        answer === question.answer
+    ) {
 
         feedback.className =
             "answer-feedback correct-feedback";
 
+
         feedback.innerHTML = `
-            <strong>✓ BENAR</strong>
+
+            <strong>✓ JAWABAN BENAR</strong>
+
             <p>
                 ${question.explanation}
             </p>
+
         `;
 
     } else {
@@ -302,8 +359,10 @@ function showFeedback(answer) {
         feedback.className =
             "answer-feedback wrong-feedback";
 
+
         feedback.innerHTML = `
-            <strong>✕ SALAH</strong>
+
+            <strong>✕ JAWABAN SALAH</strong>
 
             <p>
                 Jawaban yang benar:
@@ -315,87 +374,103 @@ function showFeedback(answer) {
             <p>
                 ${question.explanation}
             </p>
+
         `;
     }
+
+
+    optionsContainer.after(feedback);
 }
 
 
-// -------------------------
-// RESTORE JAWABAN
-// -------------------------
+// ============================================================
+// RESTORE
+// ============================================================
 
 function restoreAnswer() {
 
-    const selected =
-        userAnswers[currentQuestionIndex];
+    const answer =
+        userAnswers[
+            currentQuestionIndex
+        ];
+
 
     const question =
-        quizQuestions[currentQuestionIndex];
+        quizQuestions[
+            currentQuestionIndex
+        ];
+
 
     const buttons =
         document.querySelectorAll(
             ".option-button"
         );
 
+
     buttons.forEach(button => {
 
         button.disabled = true;
 
+
         if (
-            button.dataset.answer === selected
+            button.dataset.answer === answer
         ) {
+
             button.classList.add(
                 "selected"
             );
         }
 
+
         if (
             button.dataset.answer ===
             question.answer
         ) {
+
             button.classList.add(
                 "correct"
             );
         }
+
     });
 
-    showFeedback(selected);
+
+    showFeedback(answer);
 }
 
 
-// -------------------------
-// SKIP SOAL
-// -------------------------
+// ============================================================
+// SKIP
+// ============================================================
 
 function skipQuestion() {
 
-    // Jika sudah dijawab
     if (
-        questionStatus[currentQuestionIndex]
-        === "answered"
+        questionStatus[
+            currentQuestionIndex
+        ] === "answered"
     ) {
-        goToNextQuestion();
+
+        goNext();
+
         return;
     }
 
-    // Tandai skipped
-    questionStatus[currentQuestionIndex] =
-        "skipped";
 
-    skippedAnswers++;
+    questionStatus[
+        currentQuestionIndex
+    ] = "skipped";
 
-    userAnswers[currentQuestionIndex] =
-        null;
 
-    goToNextQuestion();
+    goNext();
 }
 
 
-// -------------------------
-// SOAL BERIKUTNYA
-// -------------------------
+// ============================================================
+// NEXT
+// ============================================================
 
-function goToNextQuestion() {
+function goNext() {
 
     if (
         currentQuestionIndex <
@@ -413,13 +488,15 @@ function goToNextQuestion() {
 }
 
 
-// -------------------------
-// SOAL SEBELUMNYA
-// -------------------------
+// ============================================================
+// PREVIOUS
+// ============================================================
 
-function goToPreviousQuestion() {
+function goPrevious() {
 
-    if (currentQuestionIndex > 0) {
+    if (
+        currentQuestionIndex > 0
+    ) {
 
         currentQuestionIndex--;
 
@@ -428,16 +505,17 @@ function goToPreviousQuestion() {
 }
 
 
-// -------------------------
+// ============================================================
 // NAVIGATION
-// -------------------------
+// ============================================================
 
-function updateNavigationButtons() {
-
-    if (!btnNext) return;
+function updateNavigation() {
 
     const status =
-        questionStatus[currentQuestionIndex];
+        questionStatus[
+            currentQuestionIndex
+        ];
+
 
     if (
         currentQuestionIndex ===
@@ -445,7 +523,7 @@ function updateNavigationButtons() {
     ) {
 
         btnNext.textContent =
-            "Selesai";
+            "Selesaikan Ujian";
 
     } else {
 
@@ -454,91 +532,120 @@ function updateNavigationButtons() {
     }
 
 
-    // Tombol skip
-    if (btnSkip) {
+    if (
+        status === "answered"
+    ) {
 
-        if (status === "answered") {
+        btnSkip.textContent =
+            "Berikutnya →";
 
-            btnSkip.textContent =
-                "Berikutnya →";
+    } else {
 
-        } else {
-
-            btnSkip.textContent =
-                "Lewati →";
-        }
+        btnSkip.textContent =
+            "Lewati →";
     }
 }
 
 
-// -------------------------
+// ============================================================
 // SCORE
-// -------------------------
+// ============================================================
 
 function updateScore() {
 
     if (!currentScore) return;
 
-    const answered =
-        correctAnswers +
-        wrongAnswers;
 
-    let score = 0;
+    let correct = 0;
 
-    if (quizQuestions.length > 0) {
 
-        score =
-            Math.round(
-                (correctAnswers /
+    quizQuestions.forEach(
+        (question, index) => {
+
+            if (
+                userAnswers[index] ===
+                question.answer
+            ) {
+
+                correct++;
+            }
+        }
+    );
+
+
+    const score =
+        Math.round(
+            (correct /
                 quizQuestions.length) *
-                100
-            );
-    }
+            100
+        );
+
 
     currentScore.textContent =
         score;
 }
 
 
-// -------------------------
-// FINISH QUIZ
-// -------------------------
+// ============================================================
+// FINISH
+// ============================================================
 
 function finishQuiz() {
 
-    // Hitung ulang skipped
-    skippedAnswers =
-        questionStatus.filter(
-            status => status === "skipped"
-        ).length;
+    let correct = 0;
+
+    let wrong = 0;
+
+    let skipped = 0;
+
+
+    quizQuestions.forEach(
+        (question, index) => {
+
+            const answer =
+                userAnswers[index];
+
+
+            if (!answer) {
+
+                skipped++;
+
+            } else if (
+                answer === question.answer
+            ) {
+
+                correct++;
+
+            } else {
+
+                wrong++;
+            }
+
+        }
+    );
+
 
     const total =
         quizQuestions.length;
 
-    const answered =
-        correctAnswers +
-        wrongAnswers;
 
     const score =
         Math.round(
-            (correctAnswers / total) * 100
+            (correct / total) * 100
         );
 
 
-    // Simpan hasil ke localStorage
     const result = {
 
-        total: total,
+        total,
 
-        correct: correctAnswers,
+        correct,
 
-        wrong: wrongAnswers,
+        wrong,
 
-        skipped: skippedAnswers,
+        skipped,
 
-        answered: answered,
-
-        score: score,
+        score,
 
         questions: quizQuestions,
 
@@ -557,53 +664,44 @@ function finishQuiz() {
     );
 
 
-    // Pindah ke halaman hasil
     window.location.href =
         "hasil.html";
 }
 
 
-// -------------------------
-// EVENT BUTTON
-// -------------------------
+// ============================================================
+// EVENTS
+// ============================================================
 
-if (btnNext) {
+btnNext.addEventListener(
+    "click",
+    () => {
 
-    btnNext.addEventListener(
-        "click",
-        () => {
+        if (
+            questionStatus[
+                currentQuestionIndex
+            ] === "unanswered"
+        ) {
 
-            const status =
-                questionStatus[
-                    currentQuestionIndex
-                ];
+            skipQuestion();
 
-            // Jika belum dijawab
-            if (status === "unanswered") {
+        } else {
 
-                skipQuestion();
-
-                return;
-            }
-
-            goToNextQuestion();
+            goNext();
         }
-    );
-}
+    }
+);
 
 
-if (btnSkip) {
-
-    btnSkip.addEventListener(
-        "click",
-        skipQuestion
-    );
-}
+btnSkip.addEventListener(
+    "click",
+    skipQuestion
+);
 
 
-// -------------------------
+// ============================================================
 // START
-// -------------------------
+// ============================================================
 
 document.addEventListener(
     "DOMContentLoaded",
