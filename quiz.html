@@ -2,7 +2,6 @@
 <html lang="id">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,559 +11,230 @@
 
     <meta
         name="description"
-        content="Simulasi 100 soal BTCLS dengan sistem random dan score otomatis."
+        content="Latihan Soal BTCLS - Klinik Putra Medika"
     >
 
-    <title>Simulasi BTCLS - BTCLS Quiz</title>
+    <title>Latihan Soal BTCLS</title>
 
     <link
         rel="stylesheet"
         href="css/style.css"
     >
-
 </head>
-
 
 <body>
 
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-    <header class="navbar">
+    <header class="quiz-header">
 
-        <div class="nav-container">
+        <div class="quiz-header-inner">
 
-            <a
-                href="index.html"
-                class="brand"
-            >
+            <div class="brand">
 
-                <span class="brand-icon">
-                    ✚
-                </span>
+                <div class="brand-icon">
+                    BT
+                </div>
 
-                <span>
+                <div>
+                    <h1>BTCLS Practice</h1>
 
-                    <strong>
-                        BTCLS
-                    </strong>
+                    <span>
+                        Klinik Putra Medika
+                    </span>
+                </div>
 
-                    <small>
-                        QUIZ
-                    </small>
-
-                </span>
-
-            </a>
+            </div>
 
 
-            <nav class="nav-menu">
+            <div class="quiz-score-box">
 
-                <a href="index.html">
-                    Home
-                </a>
+                <span>Score</span>
 
-                <a
-                    href="quiz.html"
-                    class="active"
-                >
-                    Simulasi
-                </a>
+                <strong id="current-score">
+                    0
+                </strong>
 
-            </nav>
+            </div>
 
         </div>
 
     </header>
 
 
+    <!-- =========================
+         MAIN
+    ========================== -->
 
-    <!-- =====================================================
-         QUIZ PAGE
-    ====================================================== -->
-
-    <main class="quiz-page">
-
-
-        <!-- =================================================
-             QUIZ HEADER
-        ================================================== -->
-
-        <section class="quiz-header">
-
-            <div class="quiz-header-top">
-
-                <div>
-
-                    <span class="section-label">
-                        SIMULASI BTCLS
-                    </span>
-
-                    <h1>
-                        Latihan 100 Soal
-                    </h1>
-
-                </div>
+    <main class="quiz-container">
 
 
-                <div class="quiz-status">
+        <!-- PROGRESS -->
 
-                    <div class="status-item">
+        <section class="quiz-progress">
 
-                        <span class="status-icon correct">
-                            ✓
-                        </span>
+            <div class="progress-info">
 
-                        <div>
+                <span id="question-number">
+                    Soal 1
+                </span>
 
-                            <strong id="correct-count">
-                                0
-                            </strong>
-
-                            <small>
-                                Benar
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="status-item">
-
-                        <span class="status-icon wrong">
-                            ✕
-                        </span>
-
-                        <div>
-
-                            <strong id="wrong-count">
-                                0
-                            </strong>
-
-                            <small>
-                                Salah
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="status-item">
-
-                        <span class="status-icon skipped">
-                            →
-                        </span>
-
-                        <div>
-
-                            <strong id="skip-count">
-                                0
-                            </strong>
-
-                            <small>
-                                Skip
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                <span id="progress-text">
+                    1 / 100
+                </span>
 
             </div>
 
 
-            <!-- PROGRESS -->
+            <div class="progress-track">
 
-            <div class="quiz-progress">
-
-                <div class="progress-info">
-
-                    <span>
-                        Progress pengerjaan
-                    </span>
-
-                    <strong id="progress-text">
-                        0 / 100
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    <div
-                        class="progress-fill"
-                        id="progress-fill"
-                        style="width: 0%"
-                    ></div>
-
-                </div>
+                <div
+                    id="progress-bar"
+                    class="progress-bar"
+                    style="width: 1%"
+                ></div>
 
             </div>
 
         </section>
 
 
+        <!-- QUESTION CARD -->
 
-        <!-- =================================================
-             QUIZ CONTENT
-        ================================================== -->
+        <section class="question-card">
 
-        <section class="quiz-container">
 
+            <!-- TOPIC -->
 
-            <!-- SOAL -->
+            <div
+                id="question-topic"
+                class="question-topic"
+            >
+                BTCLS
+            </div>
 
-            <div class="question-card">
 
+            <!-- QUESTION -->
 
-                <div class="question-top">
+            <h2
+                id="question-text"
+                class="question-text"
+            >
+                Memuat soal...
+            </h2>
 
-                    <span
-                        class="question-number"
-                        id="question-number"
-                    >
-                        SOAL 1
-                    </span>
 
-                    <span
-                        class="question-topic"
-                        id="question-topic"
-                    >
-                        BLS & Cardiac Arrest
-                    </span>
+            <!-- OPTIONS -->
 
-                </div>
+            <div
+                id="options-container"
+                class="options-container"
+            >
 
-
-                <div class="question-content">
-
-                    <h2 id="question-text">
-
-                        Seorang pasien ditemukan tidak
-                        responsif. Setelah memastikan keamanan
-                        penolong, tindakan berikutnya yang
-                        paling tepat adalah...
-
-                    </h2>
-
-
-                    <!-- PILIHAN -->
-
-                    <div
-                        class="options"
-                        id="options"
-                    >
-
-                        <button
-                            class="option"
-                            data-option="A"
-                        >
-
-                            <span class="option-letter">
-                                A
-                            </span>
-
-                            <span class="option-text">
-                                Memasang infus
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="option"
-                            data-option="B"
-                        >
-
-                            <span class="option-letter">
-                                B
-                            </span>
-
-                            <span class="option-text">
-                                Memeriksa tekanan darah
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="option"
-                            data-option="C"
-                        >
-
-                            <span class="option-letter">
-                                C
-                            </span>
-
-                            <span class="option-text">
-
-                                Menilai respons pasien dan
-                                mengaktifkan bantuan sesuai
-                                sistem kegawatdaruratan
-
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="option"
-                            data-option="D"
-                        >
-
-                            <span class="option-letter">
-                                D
-                            </span>
-
-                            <span class="option-text">
-                                Memberikan oksigen 15 L/menit
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="option"
-                            data-option="E"
-                        >
-
-                            <span class="option-letter">
-                                E
-                            </span>
-
-                            <span class="option-text">
-                                Melakukan pemeriksaan pupil
-                            </span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     ANSWER FEEDBACK
-                ================================================== -->
-
-                <div
-                    class="answer-feedback"
-                    id="answer-feedback"
-                    hidden
-                >
-
-                    <div
-                        class="feedback-icon"
-                        id="feedback-icon"
-                    >
-                        ✓
-                    </div>
-
-                    <div class="feedback-content">
-
-                        <strong id="feedback-title">
-                            Jawaban Benar
-                        </strong>
-
-                        <p id="feedback-answer">
-                            Jawaban yang benar: C
-                        </p>
-
-                        <div class="explanation">
-
-                            <strong>
-                                Pembahasan
-                            </strong>
-
-                            <p id="feedback-explanation">
-
-                                Penilaian respons merupakan bagian
-                                awal dari pendekatan pasien tidak
-                                responsif setelah memastikan
-                                keamanan penolong.
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     QUIZ ACTIONS
-                ================================================== -->
-
-                <div class="quiz-actions">
-
-                    <button
-                        type="button"
-                        class="quiz-btn skip-btn"
-                        id="skip-btn"
-                    >
-
-                        <span>
-                            →
-                        </span>
-
-                        Skip Soal
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="quiz-btn answer-btn"
-                        id="answer-btn"
-                        disabled
-                    >
-
-                        Jawab
-
-                        <span>
-                            →
-                        </span>
-
-                    </button>
-
-                </div>
-
+                <!--
+                    Pilihan jawaban
+                    akan dibuat otomatis
+                    oleh quiz.js
+                -->
 
             </div>
 
 
+            <!-- FEEDBACK -->
 
-            <!-- =================================================
-                 SIDE PANEL
-            ================================================== -->
-
-            <aside class="quiz-sidebar">
-
-
-                <!-- SESSION -->
-
-                <div class="sidebar-card">
-
-                    <div class="sidebar-heading">
-
-                        <h3>
-                            Status Simulasi
-                        </h3>
-
-                    </div>
+            <div
+                id="answer-feedback"
+                class="answer-feedback"
+            ></div>
 
 
-                    <div class="session-stat">
+            <!-- NAVIGATION -->
 
-                        <span>
-                            Dikerjakan
-                        </span>
+            <div class="quiz-navigation">
 
-                        <strong id="answered-count">
-                            0
-                        </strong>
-
-                    </div>
-
-
-                    <div class="session-stat">
-
-                        <span>
-                            Belum dikerjakan
-                        </span>
-
-                        <strong id="remaining-count">
-                            100
-                        </strong>
-
-                    </div>
-
-
-                    <div class="session-stat">
-
-                        <span>
-                            Nilai sementara
-                        </span>
-
-                        <strong id="current-score">
-                            0%
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- INFORMATION -->
-
-                <div class="sidebar-card information-card">
-
-                    <div class="sidebar-heading">
-
-                        <h3>
-                            Petunjuk
-                        </h3>
-
-                    </div>
-
-                    <ul>
-
-                        <li>
-                            Pilih satu jawaban yang paling tepat.
-                        </li>
-
-                        <li>
-                            Klik <strong>Jawab</strong> untuk
-                            mengunci jawaban.
-                        </li>
-
-                        <li>
-                            Soal yang belum yakin dapat di
-                            <strong>Skip</strong>.
-                        </li>
-
-                        <li>
-                            Soal yang di-skip dapat dikerjakan
-                            kembali.
-                        </li>
-
-                    </ul>
-
-                </div>
-
-
-
-                <!-- EXIT -->
-
-                <a
-                    href="index.html"
-                    class="exit-quiz"
+                <button
+                    id="btn-skip"
+                    class="btn btn-secondary"
+                    type="button"
                 >
+                    Lewati →
+                </button>
 
-                    ← Keluar dari simulasi
 
-                </a>
+                <button
+                    id="btn-next"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Berikutnya →
+                </button>
 
-            </aside>
+            </div>
+
+        </section>
+
+
+        <!-- INFO -->
+
+        <section class="quiz-info">
+
+            <div class="info-item">
+
+                <span class="info-icon">
+                    ✓
+                </span>
+
+                <div>
+                    <strong>Jawab</strong>
+                    <small>
+                        Pilih jawaban yang paling tepat
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-icon">
+                    →
+                </span>
+
+                <div>
+                    <strong>Lewati</strong>
+                    <small>
+                        Soal dapat dikerjakan kembali
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-icon">
+                    100
+                </span>
+
+                <div>
+                    <strong>100 Soal</strong>
+                    <small>
+                        Score dihitung dari seluruh soal
+                    </small>
+                </div>
+
+            </div>
 
         </section>
 
     </main>
 
 
-
-    <!-- =====================================================
+    <!-- =========================
          JAVASCRIPT
-    ====================================================== -->
+    ========================== -->
 
     <script src="js/questions.js"></script>
 
