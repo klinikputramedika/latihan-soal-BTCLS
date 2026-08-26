@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Hasil latihan soal BTCLS Klinik Putra Medika"
+    >
+
+    <title>
+        Hasil Latihan BTCLS
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="quiz-header">
+
+    <div class="quiz-header-inner">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                BT
+            </div>
+
+            <div>
+
+                <h1>
+                    BTCLS Practice
+                </h1>
+
+                <span>
+                    Klinik Putra Medika
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="result-container">
+
+
+    <!-- HEADER -->
+
+    <section class="result-header">
+
+        <div class="brand-icon">
+            ✓
+        </div>
+
+        <h1>
+            Ujian Selesai
+        </h1>
+
+        <p>
+            Berikut adalah hasil latihan BTCLS Anda.
+        </p>
+
+    </section>
+
+
+
+    <!-- SCORE -->
+
+    <section class="result-score-card">
+
+        <div class="score-circle">
+
+            <strong id="final-score">
+                0
+            </strong>
+
+            <span>
+                / 100
+            </span>
+
+        </div>
+
+
+        <div
+            id="result-message"
+            class="result-message"
+        >
+            Hasil Latihan
+        </div>
+
+    </section>
+
+
+
+    <!-- STATISTICS -->
+
+    <section class="result-stats">
+
+
+        <div class="stat-card stat-correct">
+
+            <strong id="correct-count">
+                0
+            </strong>
+
+            <span>
+                Jawaban Benar
+            </span>
+
+        </div>
+
+
+        <div class="stat-card stat-wrong">
+
+            <strong id="wrong-count">
+                0
+            </strong>
+
+            <span>
+                Jawaban Salah
+            </span>
+
+        </div>
+
+
+        <div class="stat-card stat-skip">
+
+            <strong id="skipped-count">
+                0
+            </strong>
+
+            <span>
+                Tidak Dijawab
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <strong id="total-count">
+                100
+            </strong>
+
+            <span>
+                Total Soal
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ACTION -->
+
+    <section class="result-actions">
+
+        <button
+            class="btn btn-primary"
+            onclick="location.href='quiz.html'"
+        >
+            🔄 Ulangi Latihan
+        </button>
+
+
+        <button
+            class="btn btn-secondary"
+            onclick="location.href='index.html'"
+        >
+            ← Kembali ke Beranda
+        </button>
+
+    </section>
+
+
+
+    <!-- REVIEW -->
+
+    <section class="review-section">
+
+
+        <div class="review-header">
+
+            <h2>
+                Review Jawaban
+            </h2>
+
+            <p>
+                Periksa kembali jawaban Anda dari 100 soal.
+            </p>
+
+        </div>
+
+
+        <div
+            id="review-list"
+            class="review-list"
+        >
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadResult
+);
+
+
+function loadResult() {
+
+    const stored =
+        localStorage.getItem(
+            "btclsQuizResult"
+        );
+
+
+    if (!stored) {
+
+        document.getElementById(
+            "result-message"
+        ).textContent =
+            "Belum ada hasil ujian.";
+
+        return;
+    }
+
+
+    const result =
+        JSON.parse(stored);
+
+
+    // SCORE
+
+    document.getElementById(
+        "final-score"
+    ).textContent =
+        result.score;
+
+
+    document.getElementById(
+        "correct-count"
+    ).textContent =
+        result.correct;
+
+
+    document.getElementById(
+        "wrong-count"
+    ).textContent =
+        result.wrong;
+
+
+    document.getElementById(
+        "skipped-count"
+    ).textContent =
+        result.skipped;
+
+
+    document.getElementById(
+        "total-count"
+    ).textContent =
+        result.total;
+
+
+    // MESSAGE
+
+    const message =
+        document.getElementById(
+            "result-message"
+        );
+
+
+    if (result.score >= 85) {
+
+        message.textContent =
+            "🎉 Sangat Baik! Anda siap menghadapi BTCLS.";
+
+    } else if (result.score >= 75) {
+
+        message.textContent =
+            "👍 Baik! Terus tingkatkan latihan Anda.";
+
+    } else if (result.score >= 60) {
+
+        message.textContent =
+            "📚 Cukup. Masih perlu memperkuat beberapa materi.";
+
+    } else {
+
+        message.textContent =
+            "💪 Jangan menyerah. Pelajari kembali materi dan coba lagi.";
+    }
+
+
+    // REVIEW
+
+    const reviewList =
+        document.getElementById(
+            "review-list"
+        );
+
+
+    result.questions.forEach(
+        (question, index) => {
+
+            const userAnswer =
+                result.answers[index];
+
+
+            const status =
+                userAnswer === null
+                    ? "skipped"
+                    : userAnswer ===
+                      question.answer
+                        ? "correct"
+                        : "wrong";
+
+
+            const statusText =
+                status === "correct"
+                    ? "BENAR"
+                    : status === "wrong"
+                        ? "SALAH"
+                        : "TIDAK DIJAWAB";
+
+
+            const answerText =
+                userAnswer
+                    ? `${userAnswer}. ${question.options[userAnswer]}`
+                    : "Tidak dijawab";
+
+
+            const correctText =
+                `${question.answer}. ${question.options[question.answer]}`;
+
+
+            const item =
+                document.createElement("div");
+
+
+            item.className =
+                "review-item";
+
+
+            item.innerHTML = `
+
+                <div class="review-number">
+                    SOAL ${index + 1}
+                </div>
+
+                <div class="review-question">
+                    ${question.question}
+                </div>
+
+                <div class="review-answer">
+                    Jawaban Anda:
+                    <strong>
+                        ${answerText}
+                    </strong>
+                </div>
+
+                <div class="review-answer">
+                    Jawaban benar:
+                    <strong>
+                        ${correctText}
+                    </strong>
+                </div>
+
+                <span class="review-status ${status}">
+                    ${statusText}
+                </span>
+
+            `;
+
+
+            reviewList.appendChild(item);
+
+        }
+    );
+}
+
+</script>
+
+
+</body>
+
+</html>
